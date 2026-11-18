@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>ChromaCraft Studio – Pha 2 Hoặc 3 Màu Mỹ Thuật</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       GIAO DIỆN VỪA KHUNG LAPTOP & HỖ TRỢ PHA 2 HOẶC 3 MÀU
+       ========================================================================== */
+    :root {
+      --bg: #0b0e17;
+      --card-bg: rgba(20, 25, 42, 0.9);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-inner: rgba(12, 15, 26, 0.7);
+
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --accent-grad: linear-gradient(135deg, #ec4899 0%, #8b5cf6 50%, #3b82f6 100%);
+      --accent-glow: rgba(139, 92, 246, 0.4);
+
+      --font: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 10% 15%, rgba(236, 72, 153, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 90% 15%, rgba(59, 130, 246, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 50% 85%, rgba(139, 92, 246, 0.14) 0%, transparent 55%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 22px 20px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* Khung ứng dụng chính rộng rãi chuẩn laptop (1140px) */
+    .laptop-frame {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Top Bar */
+    .header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 4px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      font-size: 28px;
+    }
+
+    .brand-title {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, #ffffff 40%, #c4b5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-subtitle {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      margin-left: 6px;
+    }
+
+    @media (max-width: 720px) {
+      .brand-subtitle { display: none; }
+      .brand-title { font-size: 20px; }
+    }
+
+    /* Nút chuyển chế độ: Pha 2 màu hoặc 3 màu */
+    .mode-switch-wrap {
+      display: flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 99px;
+      padding: 3px;
+      gap: 4px;
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 99px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      touch-action: manipulation;
+    }
+
+    .mode-btn.active {
+      background: var(--accent-grad);
+      color: #ffffff;
+      box-shadow: 0 2px 10px rgba(139, 92, 246, 0.4);
+    }
+
+    /* BỐ CỤC 2 CỘT RỘNG RÃI TRÊN LAPTOP */
+    .board-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 860px) {
+      body {
+        padding: 14px 12px 28px;
+        justify-content: flex-start;
+      }
+      .board-layout {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+
+    /* Thẻ Card */
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 16px 14px;
+        gap: 13px;
+      }
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      padding-bottom: 11px;
+    }
+
+    .head-title {
+      font-size: 15.5px;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .step-pill {
+      font-size: 10.5px;
+      font-weight: 800;
+      background: #8b5cf6;
+      color: #ffffff;
+      padding: 3px 9px;
+      border-radius: 99px;
+    }
+
+    .step-pill.step-2 {
+      background: #ec4899;
+    }
+
+    .head-hint {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* 1. KHAY 10 MÀU NẰM NGAY TRÊN ĐẦU */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 9px;
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        gap: 7px;
+      }
+    }
+
+    .color-swatch-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1.5px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius-md);
+      padding: 9px 4px 7px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      user-select: none;
+      outline: none;
+      touch-action: manipulation;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .color-swatch-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .color-swatch-btn:active {
+      transform: scale(0.94);
+    }
+
+    .color-swatch-btn.active-1 {
+      border-color: #f472b6;
+      box-shadow: 0 0 12px rgba(244, 114, 182, 0.45);
+      background: rgba(244, 114, 182, 0.14);
+    }
+
+    .color-swatch-btn.active-2 {
+      border-color: #60a5fa;
+      box-shadow: 0 0 12px rgba(96, 165, 250, 0.45);
+      background: rgba(96, 165, 250, 0.14);
+    }
+
+    .color-swatch-btn.active-3 {
+      border-color: #34d399;
+      box-shadow: 0 0 12px rgba(52, 211, 153, 0.45);
+      background: rgba(52, 211, 153, 0.14);
+    }
+
+    .color-blob {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      position: relative;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    }
+
+    .color-blob::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 5px;
+      width: 11px;
+      height: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 80%);
+      transform: rotate(-30deg);
+    }
+
+    .color-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    /* Thanh chọn màu tùy biến */
+    .custom-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card-inner);
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius-sm);
+      padding: 7px 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .custom-action-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .native-color-input {
+      -webkit-appearance: none;
+      border: none;
+      width: 26px;
+      height: 26px;
+      border-radius: 6px;
+      cursor: pointer;
+      background: none;
+    }
+    .native-color-input::-webkit-color-swatch-wrapper { padding: 0; }
+    .native-color-input::-webkit-color-swatch { border: 1.5px solid rgba(255,255,255,0.5); border-radius: 6px; }
+
+    .btn-apply-custom {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #fff;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 4px 11px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-apply-custom:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* KHU VỰC CÁC Ô CHỌN MÀU: HỖ TRỢ 2 Ô HOẶC 3 Ô */
+    .slots-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .slot-box {
+      flex: 1;
+      background: var(--card-inner);
+      border: 2px dashed rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius-md);
+      padding: 10px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      min-height: 62px;
+    }
+
+    @media (max-width: 480px) {
+      .slot-box {
+        padding: 8px 6px;
+        gap: 6px;
+      }
+    }
+
+    .slot-box.filled {
+      border-style: solid;
+      border-color: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .slot-color-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .slot-color-circle::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 5px;
+      width: 12px;
+      height: 7px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 80%);
+      transform: rotate(-30deg);
+    }
+
+    .slot-text-meta {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .slot-label {
+      font-size: 9.5px;
+      font-weight: 800;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .slot-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 90px;
+    }
+
+    .btn-clear-slot {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #ef4444;
+      color: #fff;
+      border: none;
+      font-size: 10px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 5;
+    }
+
+    .slot-box.filled .btn-clear-slot {
+      display: flex;
+    }
+
+    .plus-icon-sign {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 900;
+      color: #a855f7;
+      flex-shrink: 0;
+    }
+
+    /* HÀNG NÚT BẤM (HỖ TRỢ CHẠM CẢM ỨNG ĐIỆN THOẠI 100%) */
+    .action-button-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 2px;
+    }
+
+    .btn-mix-primary {
+      flex: 1;
+      background: var(--accent-grad);
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: 15px 22px;
+      font-family: inherit;
+      font-size: 15.5px;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 8px 25px var(--accent-glow);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      touch-action: manipulation;
+      min-height: 50px;
+    }
+
+    .btn-mix-primary:hover {
+      box-shadow: 0 10px 32px rgba(139, 92, 246, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .btn-mix-primary:active {
+      transform: scale(0.97);
+      background: linear-gradient(135deg, #db2777 0%, #7c3aed 50%, #2563eb 100%);
+    }
+
+    .btn-reset-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
+      color: #cbd5e1;
+      border-radius: var(--radius-md);
+      padding: 15px 18px;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      touch-action: manipulation;
+      min-height: 50px;
+    }
+
+    .btn-reset-secondary:hover {
+      background: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+    }
+
+    .btn-reset-secondary:active {
+      transform: scale(0.96);
+    }
+
+    /* ==========================================================================
+       CỘT PHẢI: KẾT QUẢ PHA MÀU 3D & THÔNG SỐ RỘNG RÃI
+       ========================================================================== */
+    .result-card {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 13px;
+    }
+
+    .sphere-holder {
+      padding: 8px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .result-sphere-3d {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 7px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.65), inset 0 0 20px rgba(0, 0, 0, 0.45);
+      position: relative;
+      transition: background-color 0.45s ease, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+    }
+
+    .sphere-reflection {
+      position: absolute;
+      top: 14px;
+      left: 20px;
+      width: 46px;
+      height: 26px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 80%);
+      transform: rotate(-30deg);
+      pointer-events: none;
+    }
+
+    .result-main-title {
+      font-size: 23px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: -0.4px;
+    }
+
+    .result-main-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-width: 360px;
+    }
+
+    /* Badges mã màu */
+    .codes-flex {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .code-chip {
+      flex: 1;
+      max-width: 150px;
+      background: var(--card-inner);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 9px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+      touch-action: manipulation;
+    }
+
+    .code-chip:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: #a855f7;
+    }
+
+    .code-chip:active {
+      transform: scale(0.96);
+    }
+
+    .chip-label {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--text-dim);
+      letter-spacing: 0.6px;
+    }
+
+    .chip-value {
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-top: 2px;
+    }
+
+    /* Khung công thức */
+    .formula-banner {
+      width: 100%;
+      background: var(--card-inner);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      padding: 12px 15px;
+      text-align: left;
+      font-size: 12.5px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    .formula-banner strong {
+      color: #c4b5fd;
+    }
+
+    /* Toast */
+    .toast-pill {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: #1e1b4b;
+      border: 1px solid #8b5cf6;
+      color: #ffffff;
+      padding: 11px 24px;
+      border-radius: 99px;
+      font-size: 13.5px;
+      font-weight: 700;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      z-index: 999;
+      opacity: 0;
+      transition: all 0.25s ease;
+      pointer-events: none;
+    }
+
+    .toast-pill.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="laptop-frame">
+
+    <!-- Top Bar -->
+    <header class="header-bar">
+      <div class="brand-group">
+        <span class="brand-icon">🎨</span>
+        <h1 class="brand-title">ChromaCraft Studio</h1>
+        <span class="brand-subtitle">Mô Phỏng Pha 2 & 3 Màu Mỹ Thuật</span>
+      </div>
+
+      <!-- Nút chuyển chế độ: 2 Màu hoặc 3 Màu -->
+      <div class="mode-switch-wrap">
+        <button class="mode-btn active" id="btnMode2" type="button" onclick="setMode(2)">Pha 2 Màu</button>
+        <button class="mode-btn" id="btnMode3" type="button" onclick="setMode(3)">Pha 3 Màu</button>
+      </div>
+    </header>
+
+    <!-- Khung 2 Cột Rộng Rãi Trên Laptop -->
+    <main class="board-layout">
+
+      <!-- CỘT 1: CHỌN MÀU -->
+      <section class="card">
+        <div class="card-head">
+          <span class="head-title">
+            <span class="step-pill">BƯỚC 1</span>
+            <span id="stepTitleText">Chọn 2 màu cần pha</span>
+          </span>
+          <span class="head-hint" id="statusHint">Chưa chọn màu nào</span>
+        </div>
+
+        <!-- 10 Màu Sắc Hội Họa -->
+        <div class="palette-grid" id="paletteGrid">
+          <!-- Render tự động qua JS -->
+        </div>
+
+        <!-- Tự chọn mã màu tùy ý -->
+        <div class="custom-row">
+          <span>Tự chọn mã màu tùy ý:</span>
+          <div class="custom-action-wrap">
+            <input type="color" id="nativeColorPicker" value="#10b981" class="native-color-input" title="Chọn màu tùy ý">
+            <button class="btn-apply-custom" id="btnApplyCustom" type="button" onclick="applyCustomColor()">+ Dùng màu này</button>
+          </div>
+        </div>
+
+        <!-- CÁC Ô CHỌN MÀU: HỖ TRỢ 2 HOẶC 3 MÀU -->
+        <div class="slots-container" id="slotsContainer">
+          <!-- Ô 1 -->
+          <div class="slot-box" id="slot0" onclick="handleSlotTap(0)">
+            <div class="slot-color-circle" id="circle0"></div>
+            <div class="slot-text-meta">
+              <span class="slot-label">MÀU 1</span>
+              <span class="slot-name" id="name0">Chưa chọn</span>
+            </div>
+            <button class="btn-clear-slot" id="btnClear0" type="button" onclick="event.stopPropagation(); removeSlotColor(0)" title="Bỏ màu này">✕</button>
+          </div>
+
+          <div class="plus-icon-sign">+</div>
+
+          <!-- Ô 2 -->
+          <div class="slot-box" id="slot1" onclick="handleSlotTap(1)">
+            <div class="slot-color-circle" id="circle1"></div>
+            <div class="slot-text-meta">
+              <span class="slot-label">MÀU 2</span>
+              <span class="slot-name" id="name1">Chưa chọn</span>
+            </div>
+            <button class="btn-clear-slot" id="btnClear1" type="button" onclick="event.stopPropagation(); removeSlotColor(1)" title="Bỏ màu này">✕</button>
+          </div>
+
+          <div class="plus-icon-sign" id="plusSign2" style="display: none;">+</div>
+
+          <!-- Ô 3 (Hiện khi ở chế độ 3 Màu) -->
+          <div class="slot-box" id="slot2" style="display: none;" onclick="handleSlotTap(2)">
+            <div class="slot-color-circle" id="circle2"></div>
+            <div class="slot-text-meta">
+              <span class="slot-label">MÀU 3</span>
+              <span class="slot-name" id="name2">Chưa chọn</span>
+            </div>
+            <button class="btn-clear-slot" id="btnClear2" type="button" onclick="event.stopPropagation(); removeSlotColor(2)" title="Bỏ màu này">✕</button>
+          </div>
+        </div>
+
+        <!-- Nút Hành Động: PHA MÀU NGAY & LÀM LẠI -->
+        <div class="action-button-row">
+          <button class="btn-mix-primary" id="btnMix" type="button" onclick="runColorMix()">
+            <span>✨</span>
+            <span id="btnMixText">PHA 2 MÀU NGAY</span>
+          </button>
+          <button class="btn-reset-secondary" id="btnReset" type="button" onclick="runReset()">
+            <span>↻</span>
+            <span>Làm lại</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- CỘT 2: KẾT QUẢ PHA MÀU 3D -->
+      <section class="card result-card">
+        <div class="card-head" style="width: 100%;">
+          <span class="head-title">
+            <span class="step-pill step-2">BƯỚC 2</span>
+            Kết quả pha màu
+          </span>
+        </div>
+
+        <!-- Quả cầu 3D lớn sang trọng -->
+        <div class="sphere-holder">
+          <div class="result-sphere-3d" id="resultSphere">
+            <div class="sphere-reflection"></div>
+          </div>
+        </div>
+
+        <h2 class="result-main-title" id="resultTitle">Chưa có kết quả</h2>
+        <p class="result-main-desc" id="resultDesc">Hãy chọn màu ở khay bên cạnh và nhấn nút Pha Màu.</p>
+
+        <!-- Thẻ chỉ số HEX & RGB (Chạm là copy) -->
+        <div class="codes-flex">
+          <div class="code-chip" id="chipHex" onclick="copyCode('hex')">
+            <span class="chip-label">MÃ HEX</span>
+            <span class="chip-value" id="valHex">#------</span>
+          </div>
+          <div class="code-chip" id="chipRgb" onclick="copyCode('rgb')">
+            <span class="chip-label">MÃ RGB</span>
+            <span class="chip-value" id="valRgb">---, ---, ---</span>
+          </div>
+        </div>
+
+        <!-- Khung giải thích công thức -->
+        <div class="formula-banner" id="formulaBanner">
+          🔬 Công thức: <em>Đang chờ bạn chọn màu để hòa trộn...</em>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-pill" id="toastPill">Đã sao chép mã màu!</div>
+
+  <!-- Javascript trọn gói: Hỗ trợ linh hoạt 2 hoặc 3 màu, chạy mượt trên Mobile & Laptop -->
+  <script>
+    // 10 Màu hội họa chuẩn xác
+    const PALETTE = [
+      { name: 'Đỏ', hex: '#EF4444' },
+      { name: 'Vàng', hex: '#FACC15' },
+      { name: 'Lam', hex: '#2563EB' },
+      { name: 'Trắng', hex: '#FFFFFF' },
+      { name: 'Đen', hex: '#18181B' },
+      { name: 'Cam', hex: '#F97316' },
+      { name: 'Xanh lá', hex: '#16A34A' },
+      { name: 'Tím', hex: '#8B5CF6' },
+      { name: 'Hồng', hex: '#EC4899' },
+      { name: 'Nâu đất', hex: '#854D0E' }
+    ];
+
+    // Chế độ hiện tại: 2 màu hoặc 3 màu
+    var currentMode = 2; // 2 hoặc 3
+    var pickedColors = [null, null, null]; // [Màu 1, Màu 2, Màu 3]
+
+    // 1. Khởi tạo 10 nút màu
+    var gridEl = document.getElementById('paletteGrid');
+    PALETTE.forEach(function(p, idx) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'color-swatch-btn';
+      btn.id = 'swatch-' + idx;
+      btn.innerHTML = '<div class="color-blob" style="background-color: ' + p.hex + '"></div>' +
+                      '<span class="color-label">' + p.name + '</span>';
+      
+      btn.onclick = function() {
+        onChooseColor(p, idx);
+      };
+      gridEl.appendChild(btn);
+    });
+
+    // 2. Chuyển đổi chế độ 2 Màu / 3 Màu
+    function setMode(num) {
+      currentMode = num;
+      document.getElementById('btnMode2').classList.toggle('active', num === 2);
+      document.getElementById('btnMode3').classList.toggle('active', num === 3);
+
+      document.getElementById('stepTitleText').textContent = 'Chọn ' + num + ' màu cần pha';
+      document.getElementById('btnMixText').textContent = 'PHA ' + num + ' MÀU NGAY';
+
+      // Ẩn / hiện ô thứ 3
+      var plus2 = document.getElementById('plusSign2');
+      var slot2 = document.getElementById('slot2');
+      if (num === 3) {
+        plus2.style.display = 'flex';
+        slot2.style.display = 'flex';
+      } else {
+        plus2.style.display = 'none';
+        slot2.style.display = 'none';
+        pickedColors[2] = null; // Bỏ màu thứ 3 nếu về chế độ 2
+      }
+
+      renderSlots();
+      updateStatusHint();
+      showToastMsg('Đã chuyển sang chế độ: Pha ' + num + ' Màu!');
+    }
+
+    // 3. Chọn màu: Đưa lần lượt vào các ô
+    function onChooseColor(p, idx) {
+      var emptyIndex = -1;
+      for (var i = 0; i < currentMode; i++) {
+        if (pickedColors[i] === null) {
+          emptyIndex = i;
+          break;
+        }
+      }
+
+      if (emptyIndex !== -1) {
+        pickedColors[emptyIndex] = p;
+      } else {
+        // Nếu đã chọn đủ, thay thế ô cuối cùng
+        pickedColors[currentMode - 1] = p;
+      }
+
+      renderSlots();
+      updateStatusHint();
+    }
+
+    function updateStatusHint() {
+      var count = 0;
+      for (var i = 0; i < currentMode; i++) {
+        if (pickedColors[i] !== null) count++;
+      }
+
+      var hint = document.getElementById('statusHint');
+      if (count === currentMode) {
+        hint.innerHTML = '<strong style="color: #c4b5fd">✓ Đã đủ ' + currentMode + ' màu! Nhấn "Pha Màu"</strong>';
+      } else {
+        hint.textContent = 'Đã chọn ' + count + '/' + currentMode + ' màu...';
+      }
+    }
+
+    // 4. Hiển thị các ô màu
+    function renderSlots() {
+      for (var i = 0; i < 3; i++) {
+        var slotEl = document.getElementById('slot' + i);
+        var circleEl = document.getElementById('circle' + i);
+        var nameEl = document.getElementById('name' + i);
+        var p = pickedColors[i];
+
+        if (p) {
+          slotEl.classList.add('filled');
+          circleEl.style.backgroundColor = p.hex;
+          nameEl.textContent = p.name;
+        } else {
+          slotEl.classList.remove('filled');
+          circleEl.style.backgroundColor = 'transparent';
+          nameEl.textContent = 'Chưa chọn';
+        }
+      }
+
+      // Đánh dấu viền các nút màu đang chọn
+      PALETTE.forEach(function(p, idx) {
+        var btn = document.getElementById('swatch-' + idx);
+        if (btn) {
+          btn.classList.remove('active-1', 'active-2', 'active-3');
+          for (var k = 0; k < currentMode; k++) {
+            if (pickedColors[k] && pickedColors[k].hex === p.hex) {
+              btn.classList.add('active-' + (k + 1));
+              break;
+            }
+          }
+        }
+      });
+    }
+
+    // Xóa màu ở ô cụ thể
+    function removeSlotColor(idx) {
+      pickedColors[idx] = null;
+      renderSlots();
+      updateStatusHint();
+    }
+
+    function handleSlotTap(idx) {
+      if (pickedColors[idx]) removeSlotColor(idx);
+    }
+
+    // Tự chọn màu tùy ý
+    function applyCustomColor() {
+      var hex = document.getElementById('nativeColorPicker').value;
+      onChooseColor({ name: 'Tùy chọn (' + hex.toUpperCase() + ')', hex: hex });
+    }
+
+    // 5. THUẬT TOÁN QUANG PHỔ TRỪ SẮC TỐ: PHA 2 HOẶC 3 MÀU
+    function hexToRgb(hex) {
+      hex = hex.replace('#', '').trim();
+      if (hex.length === 3) hex = hex.split('').map(function(c) { return c + c; }).join('');
+      var n = parseInt(hex, 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    }
+
+    function rgbToHex(r, g, b) {
+      var clamp = function(v) { return Math.max(0, Math.min(255, Math.round(v))); };
+      return '#' + [clamp(r), clamp(g), clamp(b)].map(function(x) { return x.toString(16).padStart(2, '0'); }).join('').toUpperCase();
+    }
+
+    // Pha tổng quát 2 hoặc 3 màu
+    function calculateMix(colors) {
+      var names = colors.map(function(c) { return c.name; });
+      var key = names.slice().sort().join('+');
+
+      // Các công thức kinh điển 3 màu
+      var formulas3 = {
+        'Lam+Vàng+Đỏ': {
+          name: 'Màu Nâu Đất Nghệ Thuật (Burnt Umber)',
+          hex: '#6B4226',
+          desc: 'Khi 3 màu gốc (Đỏ, Vàng, Lam) hòa vào nhau, chúng triệt tiêu toàn bộ quang phổ ánh sáng tạo nên sắc nâu đen trầm ấm của đất mẹ.'
+        },
+        'Cam+Lam+Đỏ': {
+          name: 'Nâu Đồng Cổ (Bronze)',
+          hex: '#78350F',
+          desc: 'Sự kết hợp giữa cam, lam và đỏ tạo nên sắc nâu đồng cổ điển, sang trọng.'
+        },
+        'Trắng+Vàng+Đỏ': {
+          name: 'Cam Đào San Hô (Peach Coral)',
+          hex: '#FDBA74',
+          desc: 'Đỏ và vàng tạo màu cam, thêm trắng tạo nên gam màu cam đào pastel dịu ngọt, tươi trẻ.'
+        },
+        'Lam+Trắng+Vàng': {
+          name: 'Xanh Bạc Hà Nhạt (Mint Cream)',
+          hex: '#86EFAC',
+          desc: 'Vàng và lam tạo màu xanh lá, kết hợp cùng trắng làm dịu mắt, mang lại cảm giác thanh khiết.'
+        },
+        'Lam+Trắng+Đỏ': {
+          name: 'Tím Lavender Nhạt (Soft Lilac)',
+          hex: '#C4B5FD',
+          desc: 'Đỏ và lam tạo màu tím quý phái, thêm sắc trắng tạo nên gam tím hoa oải hương dịu dàng.'
+        },
+        'Đen+Vàng+Đỏ': {
+          name: 'Nâu Đất Nung (Terracotta)',
+          hex: '#9A3412',
+          desc: 'Sắc cam ấm áp kết hợp cùng một chút đen tạo nên màu gạch nung cổ kính, vững chãi.'
+        },
+        'Đen+Lam+Vàng': {
+          name: 'Xanh Rêu Rừng Sâu (Deep Olive)',
+          hex: '#365314',
+          desc: 'Màu xanh lá cây được tăng chiều sâu bởi sắc đen, tạo nên màu xanh rêu thâm trầm, mộc mạc.'
+        },
+        'Đen+Lam+Đỏ': {
+          name: 'Tím Than Biển Đêm (Midnight Plum)',
+          hex: '#4C1D95',
+          desc: 'Màu tím đậm đà hòa cùng sắc đen tạo ra màu mận chín huyền bí, quyền lực.'
+        },
+        'Đen+Trắng+Đỏ': {
+          name: 'Đỏ Tro Bụi (Dusty Rose)',
+          hex: '#9F5B67',
+          desc: 'Đỏ kết hợp xám (đen + trắng) tạo ra gam đỏ tro thanh lịch, mang phong cách châu Âu retro.'
+        },
+        'Đen+Lam+Trắng': {
+          name: 'Xanh Thép Slate (Slate Blue)',
+          hex: '#475569',
+          desc: 'Lam kết hợp xám tạo ra gam màu xanh thép đĩnh đạc, hiện đại và tin cậy.'
+        },
+        'Đen+Trắng+Vàng': {
+          name: 'Vàng Mù Tạt Tro (Muted Ochre)',
+          hex: '#A39158',
+          desc: 'Vàng kết hợp cùng tông xám tạo nên sắc vàng mù tạt hoài niệm, nghệ thuật.'
+        }
+      };
+
+      // Các công thức kinh điển 2 màu
+      var formulas2 = {
+        'Vàng+Đỏ': { name: 'Màu Cam Rực Rỡ', hex: '#F97316', desc: 'Đỏ nồng ấm hòa quyện cùng Vàng tươi sáng tạo ra màu Cam tràn đầy năng lượng.' },
+        'Lam+Vàng': { name: 'Màu Xanh Lá Cây Tươi', hex: '#16A34A', desc: 'Nguyên lý trừ màu kinh điển: Sắc Vàng và Lam kết hợp sinh ra màu Xanh Lá tự nhiên của cỏ cây.' },
+        'Lam+Đỏ': { name: 'Màu Tím Quý Phái', hex: '#8B5CF6', desc: 'Sự kết hợp giữa Đỏ nhiệt huyết và Lam sâu thẳm tạo nên màu Tím huyền bí, sang trọng.' },
+        'Trắng+Đen': { name: 'Màu Xám Hiện Đại', hex: '#71717A', desc: 'Đen và Trắng trung hòa tạo ra sắc Xám thanh lịch, tối giản.' },
+        'Cam+Trắng': { name: 'Cam Đào Pastel', hex: '#FDBA74', desc: 'Màu Trắng làm giảm sắc độ, tạo nên gam Cam Đào ngọt ngào, dịu mắt.' },
+        'Hồng+Trắng': { name: 'Hồng Phấn Ngọt Ngào', hex: '#F9A8D4', desc: 'Màu Trắng mang lại vẻ dịu dàng, thơ mộng cho sắc Hồng.' },
+        'Trắng+Tím': { name: 'Tím Lavender Oải Hương', hex: '#C4B5FD', desc: 'Màu Trắng giúp sắc Tím chuyển sang tông hoa oải hương thanh khiết.' },
+        'Đen+Đỏ': { name: 'Đỏ Mận Burgundy', hex: '#7F1D1D', desc: 'Màu Đen tạo chiều sâu thâm trầm, quý phái cho sắc Đỏ.' },
+        'Lam+Đen': { name: 'Xanh Biển Sâu (Navy)', hex: '#1E3A8A', desc: 'Lam kết hợp cùng Đen tạo nên màu xanh dương đậm sâu thẳm.' },
+        'Lam+Xanh lá': { name: 'Xanh Ngọc (Teal)', hex: '#0D9488', desc: 'Sắc xanh ngọc giao thoa giữa biển cả và rừng cây.' },
+        'Trắng+Xanh lá': { name: 'Xanh Bạc Hà (Mint)', hex: '#86EFAC', desc: 'Màu xanh bạc hà tươi mát, thanh lọc tinh thần.' }
+      };
+
+      if (colors.length === 3 && formulas3[key]) return formulas3[key];
+      if (colors.length === 2 && formulas2[key]) return formulas2[key];
+
+      // Thuật toán quang phổ trừ màu tổng quát cho N màu
+      var rgbs = colors.map(function(c) { return hexToRgb(c.hex); });
+      var rMult = 1, gMult = 1, bMult = 1;
+      var hasWhite = colors.some(function(c) { return c.name.indexOf('Trắng') !== -1; });
+      var hasBlack = colors.some(function(c) { return c.name.indexOf('Đen') !== -1; });
+
+      rgbs.forEach(function(rgb) {
+        rMult *= (rgb[0] / 255);
+        gMult *= (rgb[1] / 255);
+        bMult *= (rgb[2] / 255);
+      });
+
+      var p = 1 / colors.length;
+      var rFinal = Math.pow(rMult, p) * 255;
+      var gFinal = Math.pow(gMult, p) * 255;
+      var bFinal = Math.pow(bMult, p) * 255;
+
+      // Tinh chỉnh nếu có màu Trắng làm sáng
+      if (hasWhite) {
+        rFinal = rFinal + (255 - rFinal) * 0.35;
+        gFinal = gFinal + (255 - gFinal) * 0.35;
+        bFinal = bFinal + (255 - bFinal) * 0.35;
+      }
+      // Tinh chỉnh nếu có màu Đen làm trầm
+      if (hasBlack) {
+        rFinal *= 0.65;
+        gFinal *= 0.65;
+        bFinal *= 0.65;
+      }
+
+      var finalHex = rgbToHex(rFinal, gFinal, bFinal);
+      return {
+        name: 'Màu Pha Mới (' + names.join(' + ') + ')',
+        hex: finalHex,
+        desc: 'Hỗn hợp ' + colors.length + ' màu quang phổ (' + names.join(', ') + ') đã được hòa quyện thành công.'
+      };
+    }
+
+    // 6. BẤM NÚT "PHA MÀU NGAY"
+    function runColorMix() {
+      var activeColors = [];
+      for (var i = 0; i < currentMode; i++) {
+        if (pickedColors[i]) activeColors.push(pickedColors[i]);
+      }
+
+      if (activeColors.length < currentMode) {
+        showToastMsg('⚠️ Vui lòng chọn đủ cả ' + currentMode + ' màu trước khi pha!');
+        return;
+      }
+
+      var res = calculateMix(activeColors);
+      var rgbArr = hexToRgb(res.hex);
+
+      // Quả cầu đổi màu & nảy nhẹ
+      var sphere = document.getElementById('resultSphere');
+      sphere.style.backgroundColor = res.hex;
+      sphere.style.borderColor = '#ffffff';
+      sphere.style.transform = 'scale(1.08)';
+      setTimeout(function() { sphere.style.transform = 'scale(1)'; }, 280);
+
+      // Cập nhật thông số
+      document.getElementById('resultTitle').textContent = res.name;
+      document.getElementById('resultDesc').textContent = res.desc;
+      document.getElementById('valHex').textContent = res.hex;
+      document.getElementById('valRgb').textContent = rgbArr[0] + ', ' + rgbArr[1] + ', ' + rgbArr[2];
+
+      var formulaNames = activeColors.map(function(c) { return '<strong>' + c.name + '</strong>'; }).join(' + ');
+      document.getElementById('formulaBanner').innerHTML = '🔬 Công thức: ' + formulaNames + ' = <strong>' + res.name + '</strong>';
+
+      showToastMsg('✨ Đã pha thành công: ' + res.name + '!');
+    }
+
+    // Gắn thêm cả listener sự kiện touch/click cho nút bấm
+    var mixBtn = document.getElementById('btnMix');
+    mixBtn.addEventListener('click', runColorMix);
+    mixBtn.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      runColorMix();
+    });
+
+    // 7. LÀM LẠI
+    function runReset() {
+      pickedColors = [null, null, null];
+      renderSlots();
+
+      var sphere = document.getElementById('resultSphere');
+      sphere.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+      sphere.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+
+      document.getElementById('resultTitle').textContent = 'Chưa có kết quả';
+      document.getElementById('resultDesc').textContent = 'Hãy chọn màu ở khay bên cạnh và nhấn nút Pha Màu.';
+      document.getElementById('valHex').textContent = '#------';
+      document.getElementById('valRgb').textContent = '---, ---, ---';
+      document.getElementById('formulaBanner').innerHTML = '🔬 Công thức: <em>Đang chờ bạn chọn màu để hòa trộn...</em>';
+      updateStatusHint();
+    }
+
+    // 8. Sao chép mã màu
+    function copyCode(type) {
+      var val = '';
+      var label = '';
+      if (type === 'hex') {
+        val = document.getElementById('valHex').textContent;
+        label = 'mã HEX';
+      } else {
+        val = 'rgb(' + document.getElementById('valRgb').textContent + ')';
+        label = 'mã RGB';
+      }
+
+      if (val && val.indexOf('---') === -1) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(val);
+        } else {
+          var t = document.createElement('textarea');
+          t.value = val;
+          document.body.appendChild(t);
+          t.select();
+          document.execCommand('copy');
+          document.body.removeChild(t);
+        }
+        showToastMsg('Đã sao chép ' + label + ': ' + val);
+      }
+    }
+
+    var toastTimer = null;
+    function showToastMsg(msg) {
+      var toast = document.getElementById('toastPill');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 2200);
+    }
+  </script>
+</body>
+</html>
